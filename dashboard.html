@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Leaflet.js (Peta Satelit Eretan Wetan) -->
+    <!-- Leaflet.js (Peta Satelit Riil Google/Esri Eretan Wetan) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- Font Awesome Icons -->
@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-            <!-- MENU NAVIGASI DINAMIS -->
+            <!-- MENU NAVIGASI DINAMIS SENSITIF PERAN -->
             <nav id="sidebarNav" class="px-3 space-y-1 text-xs font-medium">
                 <!-- Diisi via JavaScript sesuai role login -->
             </nav>
@@ -101,20 +101,21 @@
                     </div>
                 </div>
 
-                <!-- Tren & Notifikasi SMS -->
+                <!-- Tren 7 Hari Terakhir & Notifikasi Terbaru -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                         <h3 class="font-bold text-slate-800 text-xs mb-3 uppercase tracking-wider">Ringkasan Tren Salinitas (7 Hari Terakhir)</h3>
                         <div class="h-56"><canvas id="overviewChart"></canvas></div>
                     </div>
 
+                    <!-- Notifikasi SMS Otomatis Terkini (Khusus Penyuluh) -->
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <div>
                             <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-3">Notifikasi SMS Otomatis Terbaru</h3>
                             <div class="space-y-3 text-xs">
                                 <div class="p-3 bg-rose-50 border border-rose-200 rounded-lg">
                                     <div class="font-bold text-rose-800">[SIGAP SMS - URGENT]</div>
-                                    <p class="text-rose-700 mt-1">Sensor 04: EC naik ke 4,5 mS/cm (Batas Aman: 3,0 mS/cm). SMS Peringatan otomatis terkirim ke Petani Blok A.</p>
+                                    <p class="text-rose-700 mt-1">Sensor 04: EC naik ke 4,5 mS/cm (Batas Aman: 3,0 mS/cm). SMS Peringatan otomatis terkirim ke Petani Kelompok Sawah A.</p>
                                     <span class="text-[10px] text-slate-400 mt-1 block">Hari Ini, 08.30 WIB</span>
                                 </div>
                                 <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg">
@@ -128,7 +129,7 @@
                 </div>
             </div>
 
-            <!-- TAB 2: PETA SENSOR (GOOGLE/ESRI MAPS SATELIT ERETAN WETAN) -->
+            <!-- TAB 2: PETA SENSOR (GOOGLE MAPS SATELIT RIIL ERETAN WETAN) -->
             <div id="tab-peta" class="hidden space-y-4">
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div>
@@ -139,10 +140,12 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Map Container Leaflet Satelit -->
                     <div class="lg:col-span-2 bg-slate-100 rounded-xl overflow-hidden border border-slate-300 h-[480px] shadow-sm relative">
                         <div id="map" class="w-full h-full"></div>
                     </div>
 
+                    <!-- Panel Info Card Sensor -->
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
                         <div>
                             <div class="border-b border-slate-100 pb-3 mb-4">
@@ -186,6 +189,7 @@
                         </select>
                     </div>
 
+                    <!-- Filter Rentang Waktu (7, 30, 90 Hari) -->
                     <div class="flex items-center gap-1.5">
                         <button onclick="updateChartRange(7)" id="btn-7d" class="range-btn px-3 py-1.5 bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm">7 Hari</button>
                         <button onclick="updateChartRange(30)" id="btn-30d" class="range-btn px-3 py-1.5 bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-semibold rounded-lg">30 Hari</button>
@@ -219,49 +223,41 @@
                 </div>
             </div>
 
-            <!-- TAB 5: INPUT CATATAN & GENERASI LAPORAN PENYULUH (KHUSUS PENYULUH) -->
-            <div id="tab-penyuluh-input" class="hidden space-y-6">
+            <!-- TAB 5: LAPORAN & CATATAN PENYULUH -->
+            <div id="tab-laporan" class="hidden space-y-6">
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                        <div>
-                            <h3 class="font-bold text-slate-800 text-sm">Input Catatan Harian & Generasi Laporan Bulanan Penyuluh</h3>
-                            <p class="text-xs text-slate-500">Catatan ini akan dikompilasi secara otomatis menjadi berkas PDF resmi bulanan untuk Dinas, AUTP, dan Peneliti.</p>
-                        </div>
-                        <button onclick="publishMonthlyReport()" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs px-4 py-2 rounded-lg font-bold shadow transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-file-export"></i> Terbitkan Laporan PDF Bulanan
-                        </button>
-                    </div>
-
+                    <h3 class="font-bold text-slate-800 text-sm">Laporan & Catatan Lapangan Penyuluh</h3>
+                    
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tambah Catatan Verifikasi Lapangan Hari Ini:</label>
-                            <textarea id="penyuluhNote" rows="3" placeholder="Tuliskan hasil pengecekan fisik sawah, kondisi tanaman, atau rekomendasi..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tambah Catatan Lapangan Baru:</label>
+                            <textarea id="penyuluhNote" rows="3" placeholder="Tuliskan hasil verifikasi lapangan atau himbauan ke petani..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
                         </div>
-                        <button onclick="saveNote()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs px-4 py-2 rounded-lg font-semibold transition">
-                            Simpan Catatan
+                        <button onclick="saveNote()" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs px-4 py-2 rounded-lg font-semibold transition">
+                            Simpan & Kirim Catatan
                         </button>
                     </div>
 
                     <div class="pt-4 border-t border-slate-100">
-                        <h4 class="font-bold text-xs text-slate-700 mb-2">Riwayat Catatan Penyuluh Bulan Ini (Juli 2026):</h4>
+                        <h4 class="font-bold text-xs text-slate-700 mb-2">Riwayat Catatan Penyuluh:</h4>
                         <div id="noteHistoryList" class="space-y-2 text-xs">
                             <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
                                 <div class="font-bold text-slate-800">Dara (Penyuluh Pertanian) - 20 Juli 2026, 09.00 WIB</div>
-                                <p class="text-slate-600 mt-1">Mengecek Blok A. Kadar garam terlihat mengkristal di permukaan tanah. Diperlukan penggelontoran irigasi tawar segera.</p>
+                                <p class="text-slate-600 mt-1">Sudah mengecek fisik petak sawah Blok A. Garam mengkristal di permukaan. Sudah diinstruksikan pembukaan saluran irigasi tawar.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 6: KHUSUS DINAS PERTANIAN (PDF BULANAN DARI PENYULUH, PREDIKSI, GRAFIK BULANAN) -->
+            <!-- TAB 6: KHUSUS DINAS PERTANIAN (GRAFIK BULANAN, PREDIKSI, DOWNLOAD PDF) -->
             <div id="tab-dinas" class="hidden space-y-6">
                 <div class="bg-emerald-950 text-white p-5 rounded-xl shadow-md space-y-4">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="font-bold text-sm text-emerald-200"><i class="fa-solid fa-building-columns mr-2"></i> Portal Eksekutif Dinas Pertanian Indramayu</h3>
-                            <p class="text-xs text-emerald-300/80 mt-0.5">Monitoring kebijakan & rekapitulasi laporan bulanan penyuluh</p>
-                        </div>
+                        <h3 class="font-bold text-sm text-emerald-200"><i class="fa-solid fa-building-columns mr-2"></i> Portal Eksekutif Dinas Pertanian Indramayu</h3>
+                        <button onclick="downloadPDF('Laporan Eksekutif Dinas Pertanian Indramayu')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold px-3 py-1.5 rounded text-xs transition">
+                            <i class="fa-solid fa-file-pdf mr-1"></i> Download Laporan PDF Otomatis
+                        </button>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2 border-t border-emerald-800">
@@ -278,58 +274,19 @@
                     </div>
                 </div>
 
-                <!-- DOWNLOAD ARSIP PDF LAPORAN BULANAN DARI PENYULUH -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wider">Arsip PDF Laporan Bulanan & Catatan Penyuluh Lapangan</h4>
-                    <div class="space-y-2 text-xs">
-                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
-                            <div>
-                                <div class="font-bold text-slate-800">PDF Laporan Bulanan Penyuluh - Juli 2026 (Fokus: Kebijakan Irigasi)</div>
-                                <div class="text-[10px] text-slate-500">Dikirim oleh Penyuluh Lapangan (Dara) pada 20 Juli 2026</div>
-                            </div>
-                            <button onclick="downloadPDF('PDF Laporan Bulanan Penyuluh - Juli 2026 (Dinas Pertanian)')" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 py-1.5 rounded transition flex items-center gap-1">
-                                <i class="fa-solid fa-file-pdf"></i> Download PDF
-                            </button>
-                        </div>
-                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between opacity-75">
-                            <div>
-                                <div class="font-bold text-slate-800">PDF Laporan Bulanan Penyuluh - Juni 2026</div>
-                                <div class="text-[10px] text-slate-500">Dikirim pada 30 Juni 2026</div>
-                            </div>
-                            <button onclick="downloadPDF('PDF Laporan Bulanan Penyuluh - Juni 2026 (Dinas Pertanian)')" class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-3 py-1.5 rounded transition flex items-center gap-1">
-                                <i class="fa-solid fa-file-pdf"></i> Download PDF
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h4 class="font-bold text-xs text-slate-800 mb-3">Grafik Salinitas Bulanan (Rekapitulasi Indramayu)</h4>
+                    <h4 class="font-bold text-xs text-slate-800 mb-3">Grafik Salinitas Bulanan (Rekapitulasi Dinas)</h4>
                     <div class="h-60"><canvas id="chartBulananDinas"></canvas></div>
                 </div>
             </div>
 
-            <!-- TAB 7: KHUSUS PETUGAS AUTP (PDF BULANAN PENYULUH, RIWAYAT, ALARM, VALIDASI KLAIM) -->
+            <!-- TAB 7: KHUSUS PETUGAS AUTP (RIWAYAT, BUKTI ALARM, VALIDASI KLAIM) -->
             <div id="tab-autp" class="hidden space-y-6">
                 <div class="bg-purple-950 text-white p-5 rounded-xl shadow-md space-y-4">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="font-bold text-sm text-purple-200"><i class="fa-solid fa-file-contract mr-2"></i> Validasi Klaim Gagal Panen AUTP</h3>
-                            <p class="text-xs text-purple-300/80 mt-0.5">Verifikasi kerusakan lahan berbasis bukti IoT & laporan penyuluh</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ARSIP PDF LAPORAN BULANAN KLAIM AUTP -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wider">Arsip PDF Laporan Bulanan & Catatan Penyuluh untuk Klaim AUTP</h4>
-                    <div class="p-3 bg-purple-50 border border-purple-200 rounded-lg flex items-center justify-between text-xs">
-                        <div>
-                            <div class="font-bold text-purple-900">PDF Laporan Bulanan & Catatan Penyuluh - Juli 2026 (Fokus: Validasi Kerusakan Klaim)</div>
-                            <div class="text-[10px] text-purple-700">Dilengkapi riwayat alarm EC > 4,0 mS/cm dan verifikasi foto sawah rusak</div>
-                        </div>
-                        <button onclick="downloadPDF('PDF Laporan Bulanan Penyuluh - Juli 2026 (Validasi AUTP)')" class="bg-purple-700 hover:bg-purple-800 text-white font-bold px-3 py-1.5 rounded transition flex items-center gap-1">
-                            <i class="fa-solid fa-file-pdf"></i> Download PDF Klaim
+                        <h3 class="font-bold text-sm text-purple-200"><i class="fa-solid fa-file-contract mr-2"></i> Validasi Klaim Gagal Panen AUTP</h3>
+                        <button onclick="downloadPDF('Berkas Validasi Klaim AUTP')" class="bg-purple-500 hover:bg-purple-400 text-white font-bold px-3 py-1.5 rounded text-xs transition">
+                            <i class="fa-solid fa-file-pdf mr-1"></i> Download Laporan Klaim PDF
                         </button>
                     </div>
                 </div>
@@ -363,28 +320,14 @@
                 </div>
             </div>
 
-            <!-- TAB 8: KHUSUS PENELITI / AKADEMISI (PDF BULANAN PENYULUH, QUALITY CONTROL, ANALISIS TREN) -->
+            <!-- TAB 8: KHUSUS PENELITI / AKADEMISI (STATUS KUALITAS DATA & ANALYSIS) -->
             <div id="tab-peneliti" class="hidden space-y-6">
                 <div class="bg-amber-950 text-amber-100 p-5 rounded-xl border border-amber-800 space-y-3">
-                    <h3 class="font-bold text-sm text-amber-300"><i class="fa-solid fa-microscope mr-2"></i> Portal Riset Akademis & Quality Control Data</h3>
+                    <h3 class="font-bold text-sm text-amber-300"><i class="fa-solid fa-microscope mr-2"></i> Quality Control Data & Status Kualitas Data IoT</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-2 border-t border-amber-800">
                         <div><b>Akurasi Sensor EC:</b> ±0.05 mS/cm</div>
                         <div><b>Frekuensi Sampling:</b> 15 Menit</div>
                         <div><b>Status Kualitas Data:</b> <span class="bg-emerald-500 text-slate-900 px-2 py-0.5 rounded font-bold">99,8% Valid</span></div>
-                    </div>
-                </div>
-
-                <!-- ARSIP PDF LAPORAN BULANAN UNTUK PENELITI -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wider">Arsip PDF Laporan Bulanan & Catatan Penyuluh untuk Riset</h4>
-                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-center justify-between text-xs">
-                        <div>
-                            <div class="font-bold text-amber-900">PDF Laporan Bulanan & Catatan Penyuluh - Juli 2026 (Fokus: Data Objek Penelitian)</div>
-                            <div class="text-[10px] text-amber-800">Meliputi catatan fenologi tanaman, jadwal pemupukan, dan perlakuan lahan</div>
-                        </div>
-                        <button onclick="downloadPDF('PDF Laporan Bulanan Penyuluh - Juli 2026 (Peneliti)')" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-1.5 rounded transition flex items-center gap-1">
-                            <i class="fa-solid fa-file-pdf"></i> Download PDF Riset
-                        </button>
                     </div>
                 </div>
 
@@ -401,29 +344,30 @@
 
     <!-- JAVASCRIPT APP LOGIC -->
     <script>
-        // Struktur Navigasi Berdasarkan Permintaan Spesifik
+        // Struktur Navigasi Berdasarkan Permintaan Spesifik Tiap Stakeholder
         const roleMenus = {
             penyuluh: [
                 { id: 'beranda', label: 'Beranda Ringkasan', icon: 'fa-house' },
                 { id: 'peta', label: 'Peta Lokasi Sensor', icon: 'fa-map-location-dot' },
                 { id: 'detail', label: 'Detail Sensor (Grafik)', icon: 'fa-chart-line' },
                 { id: 'kondisi', label: 'Analisis Kondisi', icon: 'fa-brain' },
-                { id: 'penyuluh-input', label: 'Input Catatan & Generasi PDF', icon: 'fa-file-pen' }
+                { id: 'laporan', label: 'Laporan & Catatan Penyuluh', icon: 'fa-box-archive' }
             ],
             dinas: [
                 { id: 'beranda', label: 'Beranda Dinas', icon: 'fa-house' },
-                { id: 'dinas', label: 'Laporan Bulanan PDF & Prediksi', icon: 'fa-building-columns' },
+                { id: 'dinas', label: 'Monitoring, Prediksi & PDF', icon: 'fa-building-columns' },
                 { id: 'peta', label: 'Peta Sensor Eretan Wetan', icon: 'fa-map-location-dot' }
             ],
             asuransi: [
                 { id: 'beranda', label: 'Beranda Monitoring', icon: 'fa-house' },
-                { id: 'autp', label: 'PDF Laporan Penyuluh & Klaim', icon: 'fa-file-contract' },
-                { id: 'peta', label: 'Peta Sawah Tercover', icon: 'fa-map-location-dot' }
+                { id: 'autp', label: 'Riwayat, Alarm & Klaim AUTP', icon: 'fa-file-contract' },
+                { id: 'laporan', label: 'Laporan dari Penyuluh', icon: 'fa-file-lines' }
             ],
             peneliti: [
                 { id: 'beranda', label: 'Beranda Monitoring', icon: 'fa-house' },
                 { id: 'detail', label: 'Grafik (7, 30, 90 Hari)', icon: 'fa-chart-line' },
-                { id: 'peneliti', label: 'PDF Laporan & QC Data', icon: 'fa-microscope' }
+                { id: 'peneliti', label: 'Analisis Tren & QC Data', icon: 'fa-microscope' },
+                { id: 'laporan', label: 'Laporan Penyuluh', icon: 'fa-file-lines' }
             ]
         };
 
@@ -437,6 +381,7 @@
         let mapInitialized = false;
         let leafletMap;
 
+        // Inisialisasi Aplikasi Saat Memuat Halaman
         document.addEventListener('DOMContentLoaded', () => {
             const role = localStorage.getItem('SIGAP_role') || 'penyuluh';
             const username = localStorage.getItem('SIGAP_username') || 'User SIGAP';
@@ -444,6 +389,7 @@
             document.getElementById('userDisplayName').innerText = username;
             document.getElementById('userRoleBadge').innerText = roleTitles[role];
 
+            // Render Navigasi Menu
             const navContainer = document.getElementById('sidebarNav');
             const menus = roleMenus[role];
             
@@ -455,13 +401,15 @@
                 </button>
             `).join('');
 
+            // Render Chart Inisial
             initOverviewChart();
             initDetailCharts();
             initDinasChart();
         });
 
+        // Switcher Tab Navigasi
         function switchTab(tabId) {
-            const allTabs = ['beranda', 'peta', 'detail', 'kondisi', 'penyuluh-input', 'dinas', 'autp', 'peneliti'];
+            const allTabs = ['beranda', 'peta', 'detail', 'kondisi', 'laporan', 'dinas', 'autp', 'peneliti'];
             allTabs.forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if (el) el.classList.add('hidden');
@@ -480,19 +428,24 @@
                 currentBtn.classList.add('bg-emerald-800/60', 'text-emerald-300', 'font-semibold');
             }
 
+            // Load Map jika Tab Peta Dipilih
             if (tabId === 'peta' && !mapInitialized) {
                 setTimeout(initRealMap, 200);
             }
         }
 
+        // Inisialisasi Peta Satelit Riil Eretan Wetan (Google/Esri Tiles)
         function initRealMap() {
             mapInitialized = true;
+            // Koordinat Eretan Wetan, Indramayu
             leafletMap = L.map('map').setView([-6.3061, 108.1458], 15);
 
+            // Layer Satelit
             L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: 'Tiles &copy; Esri &mdash; Satellite Indramayu'
             }).addTo(leafletMap);
 
+            // Marker Node Sensor Riil
             const nodes = [
                 { id: '04', lat: -6.3055, lng: 108.1450, status: 'Perlu Pemantauan', ec: '4.5 mS/cm', color: 'red' },
                 { id: '01', lat: -6.3030, lng: 108.1420, status: 'Normal', ec: '2.1 mS/cm', color: 'green' },
@@ -511,6 +464,7 @@
             });
         }
 
+        // Chart Update Filter (7, 30, 90 Hari)
         function updateChartRange(days) {
             document.querySelectorAll('.range-btn').forEach(btn => {
                 btn.className = "range-btn px-3 py-1.5 bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-semibold rounded-lg";
@@ -520,6 +474,7 @@
             alert(`Memuat data grafik untuk rentang ${days} hari terakhir...`);
         }
 
+        // Function Tambah Catatan Penyuluh
         function saveNote() {
             const text = document.getElementById('penyuluhNote').value;
             if(!text) return alert('Silakan tuliskan catatan terlebih dahulu.');
@@ -536,12 +491,8 @@
             alert('Catatan berhasil disimpan!');
         }
 
-        function publishMonthlyReport() {
-            alert('Laporan Bulanan & Catatan Penyuluh Juli 2026 berhasil dikompilasi menjadi dokumen PDF resmi dan dikirimkan ke portal Dinas Pertanian, Petugas AUTP, serta Peneliti!');
-        }
-
         function downloadPDF(title) {
-            alert(`Menerbitkan dan mengunduh berkas ${title}...`);
+            alert(`Sistem sedang menerbitkan ${title} dalam format PDF...`);
         }
 
         function logout() {
@@ -549,6 +500,7 @@
             window.location.href = 'index.html';
         }
 
+        // Charts Inisialisasi
         let chartEC, chartHum, chartTemp;
 
         function initOverviewChart() {
